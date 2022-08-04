@@ -1,0 +1,53 @@
+Today I started diving into Xlib. It comes with an extensive C library for managing the screen from the Xserver. 
+I got intested in this when I started designing my new idea (distroWorld) I need a way to remotly display the screens 
+output over a network connection. X is the perfect tool for this. Along with the application to DistroWorld, I belivie 
+this is a indespinsable tool-set to learn for designing serious GUI's in Linux. 
+
+For starters, 
+
+Main Inlcude File: X11/Xlib.h
+- Come to find out this is not included in the standard header files. 
+I got it from a package (libx11-dev). After compiling with no greif from the operating system. 
+we should be good to go. 
+
+Now with the correct header files included we need to get the Disaplay opened. 
+This is done by calling XOpenDisplay(displayname); This will return a Display Struct if sucessfull. 
+So I will attempts to get this executed with no errors, my only concern is if the screen is connected. 
+Docs say that if you pass the function NULL it will default to the DISPLAY enviorment variable. So lets
+echo that and see what we get...
+
+echo $DISPLAY
+
+retruned :0.0
+
+this value is in accordance with the display_name format
+"protocol/hostname:number.screen_number"
+
+So now we know that the first 0 repersents number, which is the number of 
+the display server. The second 0 is screen_number which is the screen number to 
+be used. 
+
+With that little bit of knowledge, lets go for a successful compile/exexution of 
+XOpenDisplay function. Since it returns a Dispaly Struct *, lets make sure we can
+successfully decalre one. 
+
+I added this line of code to getting_started.c
+  - Display *testdis; 
+
+and wha-la! Success. 
+
+My next step was to call XOpenDisplay(NULL); Aggarvatingly enough, no success. 
+The compiler argued that there is no reference to XOpenDisplay. I checked X11/Xlib.h
+header file and found it declared in there, but not defined. My only hypotheiss is 
+that I need to link the library to my code hence: gcc myprog -l(whatever the fucing lib is called)
+
+lets make some test runs. 
+
+Nothing I guessed work, but after three tries I turned to the internet and
+thank god for Stack Overflow, I found -lX11 is what is needed to link. 
+
+COMPILATION SUCCESSFUL! (hint: link using X11)
+
+I ran a test run by trying to get the Connection number from the Xserver. 
+XConnectionNumber(Display); simply returns an INT. It returned 3, so we are hooked
+up and in business. 

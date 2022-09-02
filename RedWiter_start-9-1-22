@@ -1,0 +1,29 @@
+today was a good, though I didn't succeed. 
+
+----=[ HEAD START ]=----o 
+- Today I leaped at an exploit that I had thought of myself. 
+The idea was simple but effective. Trick a user in running a cloned-command by 
+adding malware to a local directory "~/home/me/MALWARE_DIR" and changing the local
+PATH variable so that itlooks in the MALWARE_DIR first for command name execution. 
+
+e.g. (user typed command): 'ls' (but there is an identical binary of 'ls' in MALWARE_DIR.
+*{!!} And this worked!
+
+So I tried swapping out the spoofed command as 'apt-get' for the simple reason 
+it's always ran as a sudoer. Unfourtanly this did'nt work. I've drawn a 
+
+[hypothesis/s]
+
+1. that 'sudo' creates a new-process, and uses the default PATH variable. (*side note: 
+if sudo uses fork instead it shouldn't do this*).
+
+2. sudo has explicit documentation on there man page that it want look into the loacal directroy
+if specified in the PATH. This is how I found out about possible existence called "command spoofing"
+I had maybe thought I was on to something. Unfourtantly sudoers have expericed this type of attack 
+before. However! Theres always a deeper way. 
+
+END-NOTE: 
+
+The discovery of this working was very encouraging and should confirm to the ways I did this. 
+You should be proud! You literally just put togeter your first exploit/POC! The command spoofing
+via PATH worked and didn't requirre privilege. 
